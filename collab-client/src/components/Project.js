@@ -4,7 +4,7 @@ import Task from './Task';
 
 
 
-function Project({project, userData, handleChangeUser, deleteProject}){
+function Project({project, handleChangeUser, userData, deleteProject}){
 
     const [associatedTaskData, setAssociatedTaskData]=useState([])
     const [deletedTask, setDeletedTask]=useState([])
@@ -14,7 +14,6 @@ function Project({project, userData, handleChangeUser, deleteProject}){
     const [addedTask, setAddedTask]=useState([]) 
     const [changedTaskName, setChangedTaskNAme]=useState("")
     
-    console.log("I reloaded")
 
     useEffect(()=>{
         fetch(`http://localhost:9292/project_tasks/${project.id}`)
@@ -101,15 +100,16 @@ function deleteATask(id){
           <h3>{`${project.name}`}</h3>
             <div id="project_container">
             {/* first grab all the tasks in this project */}
-            {associatedTaskData.map(task=>{
+            {project.tasks.map(task=>{
                 return(
                     <div>
                     <Task 
                     id={task.id} 
                     name={task.name} 
                     user_id={task.user_id} 
-                    userData={userData}
+                    userName={task.user.name}
                     handleChangeUser={handleChangeUser}
+                    userData={userData}
                     deleteATask={deleteATask}
                     patchTaskName={patchTaskName}/>
                     </div>
@@ -117,7 +117,7 @@ function deleteATask(id){
               })}
             </div>
             {/* Project Edit Toggle and Properties */}
-            {showProjectEdit===false ? 
+            {/* {showProjectEdit===false ? 
             <div>
               <button onClick={toggleTaskEditFields}>add a task</button>
               <br></br>
@@ -138,7 +138,7 @@ function deleteATask(id){
               <button onClick={toggleTaskEditFields}>cancel changes and close</button>
               
             </div>
-            }
+            } */}
         </div>
     )
 }

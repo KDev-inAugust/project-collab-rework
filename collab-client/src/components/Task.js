@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-function Task({id, user_id, name, userData, handleChangeUser, deleteATask, patchTaskName}){
+function Task({id, user_id, name, userName, userData, handleChangeUser, deleteATask, patchTaskName}){
     const [userId, setUserId] = useState([])
     const [showEditFields, setshowEditFields] = useState(false)
     const [taskName, setTaskName] = useState(name)
@@ -50,15 +50,15 @@ function Task({id, user_id, name, userData, handleChangeUser, deleteATask, patch
         <div className='task'>
             {`name: ${name}`}
             <br></br>
-            {` assigned to: ${userId}`}
+            {` assigned to: ${userName}`}
             <br></br>
             {showEditFields===false? <button onClick={showHideEditTask}>edit task</button>
             : 
                 <div>
                     <select onChange={handleUserNameOnChange}>
-                    <option>{userId}</option>
+                    <option>{userName}</option>
                             {userData.map((user)=>{
-                                if(user.name !=userId){
+                                if(user.name !=userName){
                                     return(<option>{user.name}</option>)
                                 }
                             })}

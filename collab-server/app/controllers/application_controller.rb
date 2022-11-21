@@ -7,33 +7,33 @@ class ApplicationController < Sinatra::Base
    users.to_json
   end
 
-  get "/tasks" do
-    tasks=Task.all
-    tasks.to_json
-  end
+  # get "/tasks" do
+  #   tasks=Task.all
+  #   tasks.to_json
+  # end
 
-  # this will get a user by a string of its own name
-  get "/users_by_name/:name" do
-    user=User.find_by(name: params[:name])
-    user.to_json
-  end
+  # # this will get a user by a string of its own name
+  # get "/users_by_name/:name" do
+  #   user=User.find_by(name: params[:name])
+  #   user.to_json
+  # end
 
-  # this will take a task id and return its user
-  get "/task_user/:id" do
-    user=Task.find(params[:id]).user
-    user.to_json
-  end
+  # # this will take a task id and return its user
+  # get "/task_user/:id" do
+  #   user=Task.find(params[:id]).user
+  #   user.to_json
+  # end
 
   get "/projects" do
     projects=Project.all
-    projects.to_json
+    projects.to_json(include: {tasks: {include: :user}})
   end
 
-  # this will take a project id and get all of its tasks
-  get "/project_tasks/:id" do
-    project=Project.find(params[:id]).tasks
-    project.to_json
-  end
+  # # this will take a project id and get all of its tasks
+  # get "/project_tasks/:id" do
+  #   project=Project.find(params[:id]).tasks
+  #   project.to_json
+  # end
 
   # ----POST requests-----
   post "/projects" do

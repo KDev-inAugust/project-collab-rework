@@ -13,7 +13,7 @@ function App() {
 useEffect(()=>{
   fetch("http://localhost:9292/projects")
   .then(res=>res.json())
-  .then(data=>{setProjectData(data); console.log(projectData)});
+  .then(data=>{setProjectData(data); console.log(data[0].tasks[0].user.name)});
 },[deletedProject])
 
 //--------get user data--------------
@@ -90,9 +90,9 @@ function handleChangeUser(taskId, userID){
           return(
             <Project 
             project={project} 
-            userData={userData} 
             handleChangeUser={handleChangeUser}
             deleteProject={deleteProject}
+            userData={userData}
             />
           )
         })
