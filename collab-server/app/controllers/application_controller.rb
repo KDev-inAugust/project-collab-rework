@@ -8,12 +8,11 @@ class ApplicationController < Sinatra::Base
   # regardless of whether or not they have a project or a task, that is why
   # it is a standalone GET becasue it must be populated the same way regardless of
   # the state of the database. And this dropdown menue is only seen when we need to 
-  # PATCH the new user to the task. 
+  # PATCH the new user to the task.
   get "/users" do
     users=User.all
    users.to_json
   end
-
 
   get "/projects" do
     projects=Project.all

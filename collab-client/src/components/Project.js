@@ -10,6 +10,7 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
     const [newTaskName, setNewTaskName]=useState("")
     const [newUserId, setNewUserId]=useState("")  
 
+  console.log("In Project Data", project.tasks)
      //------show task edit fields-----------
       function toggleTaskEditFields(){
         showProjectEdit===true? setShowProjectEdit(false) : setShowProjectEdit(true);
@@ -18,8 +19,8 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
     //-------- add a task to this project---------
   function handleAddTask (){
       addTaskToProject(newTaskName, newUserId, project.id)
-      setShowProjectEdit(false)
-    }
+    setShowProjectEdit(false)
+  }
 
     // ---------------set username for new task-------------
       

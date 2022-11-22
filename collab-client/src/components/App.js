@@ -16,7 +16,7 @@ function App() {
 useEffect(()=>{
   fetch("http://localhost:9292/projects")
   .then(res=>res.json())
-  .then(data=>{setProjectData(data)});
+  .then(data=>setProjectData(data));
 },[deletedProject, addedTask, deletedTask, patchedTask])
 
 //--------get user data--------------
@@ -67,6 +67,7 @@ function deleteProject(id){
 //-------------change user assigned to a task--------------
 
 function handleChangeUser(taskId, userID){
+  console.log(taskId, userID)
   fetch(`http://localhost:9292/tasks/${taskId}`, {
        method: "PATCH",
        headers: {
@@ -76,6 +77,7 @@ function handleChangeUser(taskId, userID){
         user_id: userID
         }), })
        .then((r) => r.json())
+       .then((data)=>console.log("this is the patch data=> ", data));
 }
 
 //------------add a task to a project--------
@@ -98,6 +100,7 @@ function addTaskToProject(newTaskName, newUserId, projectId){
 
 //----------- -PATCH- name for task --------------
       function patchTaskName(taskName, id){
+        console.log(taskName, id)
         fetch(`http://localhost:9292/task_name_change/${id}`,{
           method: "PATCH",
           headers: {
