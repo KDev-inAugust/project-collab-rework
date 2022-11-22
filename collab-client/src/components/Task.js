@@ -1,17 +1,10 @@
 import React, {useEffect, useState} from 'react';
 
 function Task({id, user_id, name, userName, userData, handleChangeUser, deleteATask, patchTaskName}){
-    const [userId, setUserId] = useState([])
+    const [userNameState, setUserId] = useState(userName)
     const [showEditFields, setshowEditFields] = useState(false)
     const [taskName, setTaskName] = useState(name)
    
-
-    //---get the user based on a task id as per a custom instance method
-      useEffect(()=>{
-        fetch(`http://localhost:9292/task_user/${id}`)
-        .then(res=>res.json())
-        .then(data=>setUserId(data.name));
-      },[user_id])
     
     //--onChange Function Calls changeUser Prop Function from App-------
     function handleUserNameOnChange(e){
@@ -30,10 +23,10 @@ function Task({id, user_id, name, userName, userData, handleChangeUser, deleteAT
         } 
         else if (showEditFields===true){
             setshowEditFields(false);
-            patchTaskName(taskName, id)
+            patchTaskName(taskName, id);
     }
         }
-    
+
     //---------this function is called when the task name input is changed-------
     function handleTaskNameOnChange (e){
         setTaskName(e.target.value)
@@ -42,7 +35,7 @@ function Task({id, user_id, name, userName, userData, handleChangeUser, deleteAT
     function handleDeleteClick(){
         if (window.confirm('are you sure you want to delete this task?')===true){
             setshowEditFields(false)
-        deleteATask(id)
+            deleteATask(id)
     }
         }
 
@@ -56,7 +49,7 @@ function Task({id, user_id, name, userName, userData, handleChangeUser, deleteAT
             : 
                 <div>
                     <select onChange={handleUserNameOnChange}>
-                    <option>{userName}</option>
+                    <option>{userNameState}</option>
                             {userData.map((user)=>{
                                 if(user.name !=userName){
                                     return(<option>{user.name}</option>)

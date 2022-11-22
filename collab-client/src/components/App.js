@@ -8,13 +8,15 @@ function App() {
   const [projectData, setProjectData]=useState([])
   const [userData, setUserData]=useState([])
   const [deletedProject, setDeletedProject]=useState([])
+  const [addedTask, setAddedTask]=useState([])
+  const [deletedTask, setDeletedTask]=useState([])
 
 //---------get project data--------
 useEffect(()=>{
   fetch("http://localhost:9292/projects")
   .then(res=>res.json())
-  .then(data=>{setProjectData(data); console.log(data[0].tasks[0].user.name)});
-},[deletedProject])
+  .then(data=>{setProjectData(data); console.log("project data", data) });
+},[deletedProject, addedTask, deletedTask])
 
 //--------get user data--------------
 
@@ -22,13 +24,11 @@ useEffect(()=>{
   fetch("http://localhost:9292/users")
   .then(res=>res.json())
   .then(data=>setUserData(data));
-  
 },[])
 
 //-----------add -POST- new project to DB------------
 
 function handleAddProject(name){
-  
   fetch("http://localhost:9292/projects",{
     method: "POST",
     headers: {
@@ -44,7 +44,6 @@ function handleAddProject(name){
 //----------- -DELETE- a Project from DB-----------
 
 function deleteProject(id){
-
   fetch(`http://localhost:9292/projects_tasks/${id}`,{
     method: "DELETE",
     headers: {
@@ -67,6 +66,7 @@ function deleteProject(id){
 //-------------change user assigned to a task--------------
 
 function handleChangeUser(taskId, userID){
+  console.log(taskId, userID)
   fetch(`http://localhost:9292/tasks/${taskId}`, {
        method: "PATCH",
        headers: {
@@ -77,6 +77,50 @@ function handleChangeUser(taskId, userID){
         }), })
        .then((r) => r.json())
        .then((data)=>console.log("this is the patch data=> ", data));
+}
+
+//------------add a task to a project--------
+
+function addTaskToProject(newTaskName, newUserId, projectId){
+  fetch('http://localhost:9292/tasks',{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: newTaskName,
+      completedYN: false,
+      user_id: newUserId,
+      project_id: projectId
+      })
+  }).then(res=>res.json())
+  .then(data=>setAddedTask(data));
+}
+
+//----------- -PATCH- name for task --------------
+      function patchTaskName(taskName, id){
+        console.log(taskName, id)
+        fetch(`http://localhost:9292/task_name_change/${id}`,{
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+          name: taskName
+          }),})
+      .then(res=>res.json())
+      .then(data=> console.log(data));
+      }
+
+//-------------delete a task--------------
+function deleteATask(id){
+  fetch(`http://localhost:9292/tasks/${id}`,{
+  method: "DELETE",
+  headers: {
+    "Content-Type": "application/json",
+  },
+}).then(res=>res.json()
+.then(data=>setDeletedTask(data)))
 }
 
 //-----------update the database------------
@@ -93,6 +137,9 @@ function handleChangeUser(taskId, userID){
             handleChangeUser={handleChangeUser}
             deleteProject={deleteProject}
             userData={userData}
+            addTaskToProject={addTaskToProject}
+            deleteATask={deleteATask}
+            patchTaskName={patchTaskName}
             />
           )
         })

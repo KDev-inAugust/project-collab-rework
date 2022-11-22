@@ -12,11 +12,14 @@ class ApplicationController < Sinatra::Base
   #   tasks.to_json
   # end
 
-  # # this will get a user by a string of its own name
-  # get "/users_by_name/:name" do
-  #   user=User.find_by(name: params[:name])
-  #   user.to_json
-  # end
+  # # this will get a user by a string of its own name, this is needed in the task module 
+  # to update the name of the user associate with the task
+  # the dropdown menu only provides a string and so for the POST to work we need to find an actual
+  # database record for this user based on a strin gof thier name
+  get "/users_by_name/:name" do
+    user=User.find_by(name: params[:name])
+    user.to_json
+  end
 
   # # this will take a task id and return its user
   # get "/task_user/:id" do
@@ -29,11 +32,11 @@ class ApplicationController < Sinatra::Base
     projects.to_json(include: {tasks: {include: :user}})
   end
 
-  # # this will take a project id and get all of its tasks
-  # get "/project_tasks/:id" do
-  #   project=Project.find(params[:id]).tasks
-  #   project.to_json
-  # end
+  # this will take a project id and get all of its tasks
+  get "/project_tasks/:id" do
+    project=Project.find(params[:id]).tasks
+    project.to_json
+  end
 
   # ----POST requests-----
   post "/projects" do

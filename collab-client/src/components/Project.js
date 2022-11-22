@@ -4,62 +4,28 @@ import Task from './Task';
 
 
 
-function Project({project, handleChangeUser, userData, deleteProject}){
+function Project({project, handleChangeUser, deleteATask, addTaskToProject, userData, deleteProject}){
 
-    const [associatedTaskData, setAssociatedTaskData]=useState([])
-    const [deletedTask, setDeletedTask]=useState([])
     const [showProjectEdit, setShowProjectEdit]=useState(false)
     const [newTaskName, setNewTaskName]=useState("")
-    const [newUserId, setNewUserId]=useState("")
-    const [addedTask, setAddedTask]=useState([]) 
-    const [changedTaskName, setChangedTaskNAme]=useState("")
-    
+    const [newUserId, setNewUserId]=useState("")  
 
-    useEffect(()=>{
-        fetch(`http://localhost:9292/project_tasks/${project.id}`)
-        .then(res=>res.json())
-        .then(data=>{setAssociatedTaskData(data); console.log(data)});
-        console.log("this is the associated task data", associatedTaskData)
-      },[addedTask, deletedTask, changedTaskName, project])
-
+  console.log("In Project Data", project.tasks)
      //------show task edit fields-----------
       function toggleTaskEditFields(){
         showProjectEdit===true? setShowProjectEdit(false) : setShowProjectEdit(true);
       }
      
     //-------- add a task to this project---------
-      function addTaskToProject(){
-        
-        fetch('http://localhost:9292/tasks',{
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: newTaskName,
-            completedYN: false,
-            user_id: newUserId,
-            project_id: project.id
-            })
+  function handleAddTask (){
+      addTaskToProject(newTaskName, newUserId, project.id)
+    setShowProjectEdit(false)
+  }
 
-        }).then(res=>res.json())
-        .then(data=>setAddedTask(data));
-        setShowProjectEdit(false)
-      }
-
-// --------the delete a task function---------
-function deleteATask(id){
-  fetch(`http://localhost:9292/tasks/${id}`,{
-  method: "DELETE",
-  headers: {
-    "Content-Type": "application/json",
-  },
-}).then(res=>res.json()
-.then(data=>setDeletedTask(data)))
-}
 
 //-------------- -PATCH- name for task --------------
       function patchTaskName(taskName, id){
+        console.log(taskName, id)
         fetch(`http://localhost:9292/task_name_change/${id}`,{
           method: "PATCH",
           headers: {
@@ -69,7 +35,7 @@ function deleteATask(id){
           name: taskName
           }),})
       .then(res=>res.json())
-      .then(data=> setChangedTaskNAme(data));
+      .then(data=> console.log(data));
       }
 
   
@@ -87,7 +53,9 @@ function deleteATask(id){
       setNewTaskName(e.target.value)
       console.log(e.target.value)
     }
-//------------handle delete current project---------------
+
+
+    //------------handle delete current project---------------
     
       function handleDeleteProject(){
         if (window.confirm('are you sure you want to delete this project?')===true){
@@ -117,7 +85,7 @@ function deleteATask(id){
               })}
             </div>
             {/* Project Edit Toggle and Properties */}
-            {/* {showProjectEdit===false ? 
+            {showProjectEdit===false ? 
             <div>
               <button onClick={toggleTaskEditFields}>add a task</button>
               <br></br>
@@ -133,12 +101,12 @@ function deleteATask(id){
                     <option>{index.name}</option>)}
               </select>
               <br></br>
-              <button onClick={addTaskToProject}>add and close edit field</button> 
+              <button onClick={handleAddTask}>add and close edit field</button> 
               <br></br>
               <button onClick={toggleTaskEditFields}>cancel changes and close</button>
               
             </div>
-            } */}
+            }
         </div>
     )
 }
