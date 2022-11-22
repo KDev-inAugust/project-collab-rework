@@ -2,15 +2,17 @@ class ApplicationController < Sinatra::Base
   set :default_content_type, 'application/json'
  
   # -----GET requests-------
+
+  # this GET is not used to populate any data associated with anything
+  # it is used soley to populate a dropdown menu which must have a list of all users
+  # regardless of whether or not they have a project or a task, that is why
+  # it is a standalone GET becasue it must be populated the same way regardless of
+  # the state of the database. And this dropdown menue is only seen when we need to 
+  # PATCH the new user to the task. 
   get "/users" do
     users=User.all
    users.to_json
   end
-
-  # get "/tasks" do
-  #   tasks=Task.all
-  #   tasks.to_json
-  # end
 
   # # this will get a user by a string of its own name, this is needed in the task module 
   # to update the name of the user associate with the task
@@ -21,22 +23,12 @@ class ApplicationController < Sinatra::Base
     user.to_json
   end
 
-  # # this will take a task id and return its user
-  # get "/task_user/:id" do
-  #   user=Task.find(params[:id]).user
-  #   user.to_json
-  # end
 
   get "/projects" do
     projects=Project.all
     projects.to_json(include: {tasks: {include: :user}})
   end
 
-  # this will take a project id and get all of its tasks
-  get "/project_tasks/:id" do
-    project=Project.find(params[:id]).tasks
-    project.to_json
-  end
 
   # ----POST requests-----
   post "/projects" do
@@ -45,7 +37,6 @@ class ApplicationController < Sinatra::Base
     )
     project.to_json
   end
-
 
   post "/tasks" do
     task=Task.create(
