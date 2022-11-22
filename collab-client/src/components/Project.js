@@ -4,13 +4,12 @@ import Task from './Task';
 
 
 
-function Project({project, handleChangeUser, deleteATask, addTaskToProject, userData, deleteProject}){
+function Project({project, patchTaskName, handleChangeUser, deleteATask, addTaskToProject, userData, deleteProject}){
 
     const [showProjectEdit, setShowProjectEdit]=useState(false)
     const [newTaskName, setNewTaskName]=useState("")
     const [newUserId, setNewUserId]=useState("")  
 
-  console.log("In Project Data", project.tasks)
      //------show task edit fields-----------
       function toggleTaskEditFields(){
         showProjectEdit===true? setShowProjectEdit(false) : setShowProjectEdit(true);
@@ -22,30 +21,12 @@ function Project({project, handleChangeUser, deleteATask, addTaskToProject, user
     setShowProjectEdit(false)
   }
 
-
-//-------------- -PATCH- name for task --------------
-      function patchTaskName(taskName, id){
-        console.log(taskName, id)
-        fetch(`http://localhost:9292/task_name_change/${id}`,{
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-          name: taskName
-          }),})
-      .then(res=>res.json())
-      .then(data=> console.log(data));
-      }
-
-  
     // ---------------set username for new task-------------
       
       function handleNewTaskUserName(e){
         fetch(`http://localhost:9292/users_by_name/${e.target.value}`)
         .then(res=>res.json())
         .then(data=>setNewUserId(data.id))
-        console.log(newUserId)
       }
     //---------------------- set new task name --------------
 
@@ -53,7 +34,6 @@ function Project({project, handleChangeUser, deleteATask, addTaskToProject, user
       setNewTaskName(e.target.value)
       console.log(e.target.value)
     }
-
 
     //------------handle delete current project---------------
     

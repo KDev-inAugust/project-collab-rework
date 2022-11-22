@@ -10,13 +10,14 @@ function App() {
   const [deletedProject, setDeletedProject]=useState([])
   const [addedTask, setAddedTask]=useState([])
   const [deletedTask, setDeletedTask]=useState([])
+  const [patchedTask, setPatchedTask]=useState([])
 
 //---------get project data--------
 useEffect(()=>{
   fetch("http://localhost:9292/projects")
   .then(res=>res.json())
   .then(data=>{setProjectData(data); console.log("project data", data) });
-},[deletedProject, addedTask, deletedTask])
+},[deletedProject, addedTask, deletedTask, patchedTask])
 
 //--------get user data--------------
 
@@ -38,7 +39,7 @@ function handleAddProject(name){
       name: name,
     })
     }).then(res=>res.json())
-    .then(data=>{setProjectData([...projectData, data])})
+    .then(data=>setAddedTask(data))
 }
 
 //----------- -DELETE- a Project from DB-----------
@@ -109,7 +110,7 @@ function addTaskToProject(newTaskName, newUserId, projectId){
           name: taskName
           }),})
       .then(res=>res.json())
-      .then(data=> console.log(data));
+      .then(data=> setPatchedTask(data));
       }
 
 //-------------delete a task--------------
