@@ -10,7 +10,7 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
     const [newTaskName, setNewTaskName]=useState("")
     const [newUserId, setNewUserId]=useState("")  
 
-    console.log(`Project ${project.id} rendered`)
+    console.log(`Project ${project}`)
 
 
      //------show task edit fields-----------
@@ -74,8 +74,9 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
             <div>
               <input onChange={handleNewTaskName} placeholder='add task name'></input>
               <br></br>
+              <p>choose a person for this task</p>
               <select onChange={handleNewTaskUserName}>
-                  <option value="" disabled selected>choose a person for this task</option>
+                  
                   {userData.map((user)=>
                     <option value={user.id}>{user.name}</option>)}
               </select>
