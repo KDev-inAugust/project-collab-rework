@@ -10,7 +10,9 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
     const [newTaskName, setNewTaskName]=useState("")
     const [newUserId, setNewUserId]=useState("")  
 
-  console.log("In Project Data", project.tasks)
+    console.log(`Project ${project.id} rendered`)
+
+
      //------show task edit fields-----------
       function toggleTaskEditFields(){
         showProjectEdit===true? setShowProjectEdit(false) : setShowProjectEdit(true);
@@ -22,18 +24,14 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
     setShowProjectEdit(false)
   }
 
-    // ---------------set username for new task-------------
-      
-      function handleNewTaskUserName(e){
-        fetch(`http://localhost:9292/users_by_name/${e.target.value}`)
-        .then(res=>res.json())
-        .then(data=>setNewUserId(data.id))
-      }
     //---------------------- set new task name --------------
 
     function handleNewTaskName(e){
       setNewTaskName(e.target.value)
-      console.log(e.target.value)
+    }
+
+    function handleNewTaskUserName(e){
+      setNewUserId(e.target.value)
     }
 
     //------------handle delete current project---------------
@@ -78,8 +76,8 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
               <br></br>
               <select onChange={handleNewTaskUserName}>
                   <option value="" disabled selected>choose a person for this task</option>
-                  {userData.map((index)=>
-                    <option>{index.name}</option>)}
+                  {userData.map((user)=>
+                    <option value={user.id}>{user.name}</option>)}
               </select>
               <br></br>
               <button onClick={handleAddTask}>add and close edit field</button> 
