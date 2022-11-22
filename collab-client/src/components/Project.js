@@ -10,7 +10,7 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
     const [newTaskName, setNewTaskName]=useState("")
     const [newUserId, setNewUserId]=useState("")  
 
-    console.log(`Project ${project}`)
+    console.log(`Project ${project.id} rendered`)
 
 
      //------show task edit fields-----------

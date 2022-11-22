@@ -16,7 +16,8 @@ class ApplicationController < Sinatra::Base
 
   get "/projects" do
     projects=Project.all
-    projects.to_json(include: {tasks: {include: :user}})
+    projects.to_json(only: [:id, :name], include: {
+      tasks: { only: [:id, :name, :user_id, :project_id], include: :user}})
   end
 
 
