@@ -18,8 +18,8 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
     //-------- add a task to this project---------
   function handleAddTask (){
       addTaskToProject(newTaskName, newUserId, project.id)
-    setShowProjectEdit(false)
-  }
+      setShowProjectEdit(false)
+    }
 
     // ---------------set username for new task-------------
       

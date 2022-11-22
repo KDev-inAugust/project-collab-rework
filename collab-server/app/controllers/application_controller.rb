@@ -14,15 +14,6 @@ class ApplicationController < Sinatra::Base
    users.to_json
   end
 
-  # # this will get a user by a string of its own name, this is needed in the task module 
-  # to update the name of the user associate with the task
-  # the dropdown menu only provides a string and so for the POST to work we need to find an actual
-  # database record for this user based on a strin gof thier name
-  get "/users_by_name/:name" do
-    user=User.find_by(name: params[:name])
-    user.to_json
-  end
-
 
   get "/projects" do
     projects=Project.all

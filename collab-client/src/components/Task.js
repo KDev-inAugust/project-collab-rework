@@ -5,14 +5,13 @@ function Task({id, user_id, name, userName, userData, handleChangeUser, deleteAT
     const [showEditFields, setshowEditFields] = useState(false)
     const [taskName, setTaskName] = useState(name)
    
-    
     //--onChange Function Calls changeUser Prop Function from App-------
+
+
     function handleUserNameOnChange(e){
-        fetch(`http://localhost:9292/users_by_name/${e.target.value}`)
-        .then(res=>res.json())
-        .then(data=>{handleChangeUser(id, data.id);
-        setUserId(data.name)}
-        );
+        let menuValue=e.target.value
+       handleChangeUser(id, menuValue)
+        // setUserId(userName)
     }
 
     //----------this function allows the edit fields for a task to be shown------
@@ -49,10 +48,10 @@ function Task({id, user_id, name, userName, userData, handleChangeUser, deleteAT
             : 
                 <div>
                     <select onChange={handleUserNameOnChange}>
-                    <option>{userNameState}</option>
+                    <option>{userName}</option>
                             {userData.map((user)=>{
                                 if(user.name !=userName){
-                                    return(<option>{user.name}</option>)
+                                    return(<option value={user.id}>{user.name}</option>)
                                 }
                             })}
                         </select>
