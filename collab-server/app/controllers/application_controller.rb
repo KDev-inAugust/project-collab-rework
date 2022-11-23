@@ -20,6 +20,11 @@ class ApplicationController < Sinatra::Base
       tasks: { only: [:id, :name, :user_id, :project_id], include: :user}})
   end
 
+  # I'm only including this following route to demonstrate the use of Active Record Query Moethods
+  get '/projects_tasks/:id' do
+    tasks=Project.find(params[:id]).tasks
+    tasks.to_json
+  end
 
   # ----POST requests-----
   post "/projects" do

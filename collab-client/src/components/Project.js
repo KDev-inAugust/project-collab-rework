@@ -9,8 +9,13 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
     const [showProjectEdit, setShowProjectEdit]=useState(false)
     const [newTaskName, setNewTaskName]=useState("")
     const [newUserId, setNewUserId]=useState("")  
+    const [taskCount, setTaskCount]=useState(0)
 
     console.log(`Project ${project.id} rendered`)
+
+    fetch(`http://localhost:9292/projects_tasks/${project.id}`)
+    .then(res=>res.json())
+    .then(data=>setTaskCount(data.length))
 
 
      //------show task edit fields-----------
@@ -45,6 +50,7 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
     return (
         <div id="project_wrapper">
           <h3>{`${project.name}`}</h3>
+          <h4>tasks in this project: {taskCount}</h4>
             <div id="project_container">
             {/* first grab all the tasks in this project */}
             {project.tasks.map(task=>{
