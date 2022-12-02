@@ -79,20 +79,7 @@ function addTaskToProject(newTaskName, newUserId, projectId){
   .then(data=>console.log(data));
 }
 
-//----------- -PATCH- name for task --------------
-      function patchTaskName(taskName, id){
-        console.log(taskName, id)
-        fetch(`http://localhost:9292/task_name_change/${id}`,{
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-          name: taskName
-          }),})
-      .then(res=>res.json())
-      .then(data=> console.log(data));
-      }
+
 
 //-------------delete a task--------------
 function deleteATask(id){
@@ -120,7 +107,6 @@ function deleteATask(id){
             userData={userData}
             addTaskToProject={addTaskToProject}
             deleteATask={deleteATask}
-            patchTaskName={patchTaskName}
             />
           )
         })

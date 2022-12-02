@@ -30,6 +30,8 @@ function Task({id, user_id, name, userName, userData, handleChangeUser, deleteAT
          });
   }
 
+  
+  
     //----------this function allows the edit fields for a task to be shown------
 
     function showHideEditTask(){
@@ -47,6 +49,20 @@ function Task({id, user_id, name, userName, userData, handleChangeUser, deleteAT
         setTaskName(e.target.value)
     }
 
+    //----------- -PATCH- name for task --------------
+    function patchTaskName(taskName, id){
+        fetch(`http://localhost:9292/task_name_change/${id}`,{
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+        name: taskName
+        }),})
+    .then(res=>res.json())
+    .then(data=>setTaskName(data.name));
+    }
+
     function handleDeleteClick(){
         if (window.confirm('are you sure you want to delete this task?')===true){
             setshowEditFields(false)
@@ -55,10 +71,9 @@ function Task({id, user_id, name, userName, userData, handleChangeUser, deleteAT
         }
 
 
-  
     return(
         <div className='task'>
-            {`name: ${name}`}
+            {`name: ${taskName}`}
             <br></br>
             {` assigned to: ${userNameState}`}
             <br></br>
@@ -66,9 +81,9 @@ function Task({id, user_id, name, userName, userData, handleChangeUser, deleteAT
             : 
                 <div>
                     <select onChange={handleUserNameOnChange}>
-                    <option>{userName}</option>
+                    <option>{userNameState}</option>
                             {userData.map((user)=>{
-                                if(user.name !=userName){
+                                if(user.name !=userNameState){
                                     return(<option value={user.id}>{user.name}</option>)
                                 }
                             })}

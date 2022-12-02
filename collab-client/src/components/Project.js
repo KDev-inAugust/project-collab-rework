@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import Task from './Task';
 
 
-function Project({project, patchTaskName, handleChangeUser, deleteATask, addTaskToProject, userData, deleteProject}){
+function Project({project, handleChangeUser, deleteATask, addTaskToProject, userData, deleteProject}){
 
 
     const [showProjectEdit, setShowProjectEdit]=useState(false)
@@ -54,8 +54,7 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
               userName={task.user.name}
               handleChangeUser={handleChangeUser}
               userData={userData}
-              deleteATask={deleteATask}
-              patchTaskName={patchTaskName}/>
+              deleteATask={deleteATask}/>
               </div>
             )
         })
