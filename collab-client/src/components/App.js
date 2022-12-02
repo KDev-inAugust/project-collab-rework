@@ -35,7 +35,7 @@ function handleAddProject(name){
       name: name,
     })
     }).then(res=>res.json())
-    .then(data=>{setProjectData([...projectData, data]); console.log(projectData)});
+    .then(data=>{setProjectData([...projectData, data])});
 }
 
 //----------- -DELETE- a Project from DB-----------
@@ -57,7 +57,7 @@ function deleteProject(id){
     },
   })
   .then(res=>res.json())
-  .then(data=>console.log(data))
+  .then(data=>setProjectData(projectData.filter((index)=>index.id!==data.id)))
 }
 
 //-------------change user assigned to a task--------------
