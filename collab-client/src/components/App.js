@@ -60,21 +60,6 @@ function deleteProject(id){
   .then(data=>setProjectData(projectData.filter((index)=>index.id!==data.id)))
 }
 
-//-------------change user assigned to a task--------------
-
-function handleChangeUser(taskId, userID){
-  console.log(taskId, userID)
-  fetch(`http://localhost:9292/tasks/${taskId}`, {
-       method: "PATCH",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: JSON.stringify({
-        user_id: userID
-        }), })
-       .then((r) => r.json())
-       .then((data)=>console.log("this is the patch data=> ", data));
-}
 
 //------------add a task to a project--------
 
@@ -131,7 +116,6 @@ function deleteATask(id){
           return(
             <Project 
             project={project} 
-            handleChangeUser={handleChangeUser}
             deleteProject={deleteProject}
             userData={userData}
             addTaskToProject={addTaskToProject}

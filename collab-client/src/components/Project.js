@@ -3,9 +3,8 @@ import React, {useState} from 'react';
 import Task from './Task';
 
 
-
 function Project({project, patchTaskName, handleChangeUser, deleteATask, addTaskToProject, userData, deleteProject}){
-console.log(project)
+
 
     const [showProjectEdit, setShowProjectEdit]=useState(false)
     const [newTaskName, setNewTaskName]=useState("")
@@ -42,7 +41,6 @@ console.log(project)
           deleteProject(project.id)
         }
       }
-      console.log("tasks" in project);
 
       let projArray;
       if ("tasks" in project===true){
@@ -64,9 +62,6 @@ console.log(project)
 
       }
       else project.tasks=[]
-
-
-
 
     return (
         <div id="project_wrapper">
