@@ -22,6 +22,7 @@ class ApplicationController < Sinatra::Base
 
   # I'm only including this following route to demonstrate the use of Active Record Query Methods
   get '/projects_tasks/:id' do
+  # get '/projects/:project_id/tasks' do
     tasks=Project.find(params[:id]).tasks
     tasks.to_json
   end

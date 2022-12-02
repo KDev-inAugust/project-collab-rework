@@ -7,7 +7,6 @@ function AddProj({handleAddProject}){
 
     function handleSetText(e){
         setText(e.target.value);
-        
     }
 
     function handleClick(e){

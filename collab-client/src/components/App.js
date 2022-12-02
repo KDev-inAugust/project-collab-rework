@@ -7,17 +7,13 @@ import Project from './Project';
 function App() {
   const [projectData, setProjectData]=useState([])
   const [userData, setUserData]=useState([])
-  const [deletedProject, setDeletedProject]=useState([])
-  const [addedTask, setAddedTask]=useState([])
-  const [deletedTask, setDeletedTask]=useState([])
-  const [patchedTask, setPatchedTask]=useState([])
 
 //---------get project data--------
 useEffect(()=>{
   fetch("http://localhost:9292/projects")
   .then(res=>res.json())
   .then(data=>setProjectData(data));
-},[deletedProject, addedTask, deletedTask, patchedTask])
+},[])
 
 //--------get user data--------------
 
@@ -27,7 +23,7 @@ useEffect(()=>{
   .then(data=>setUserData(data));
 },[])
 
-//-----------add -POST- new project to DB------------
+//---------- -POST- new project to DB------------
 
 function handleAddProject(name){
   fetch("http://localhost:9292/projects",{
@@ -39,7 +35,7 @@ function handleAddProject(name){
       name: name,
     })
     }).then(res=>res.json())
-    .then(data=>setAddedTask(data))
+    .then(data=>{setProjectData([...projectData, data]); console.log(projectData)});
 }
 
 //----------- -DELETE- a Project from DB-----------
@@ -52,7 +48,7 @@ function deleteProject(id){
     },
   })
   .then(res=>res.json())
-  .then(data=>setDeletedProject(data))
+  .then(data=>console.log(data))
 
   fetch(`http://localhost:9292/projects/${id}`,{
     method: "DELETE",
@@ -61,7 +57,7 @@ function deleteProject(id){
     },
   })
   .then(res=>res.json())
-  .then(data=>setDeletedProject(data))
+  .then(data=>console.log(data))
 }
 
 //-------------change user assigned to a task--------------
@@ -95,7 +91,7 @@ function addTaskToProject(newTaskName, newUserId, projectId){
       project_id: projectId
       })
   }).then(res=>res.json())
-  .then(data=>setAddedTask(data));
+  .then(data=>console.log(data));
 }
 
 //----------- -PATCH- name for task --------------
@@ -110,7 +106,7 @@ function addTaskToProject(newTaskName, newUserId, projectId){
           name: taskName
           }),})
       .then(res=>res.json())
-      .then(data=> setPatchedTask(data));
+      .then(data=> console.log(data));
       }
 
 //-------------delete a task--------------
@@ -121,7 +117,7 @@ function deleteATask(id){
     "Content-Type": "application/json",
   },
 }).then(res=>res.json()
-.then(data=>setDeletedTask(data)))
+.then(data=>console.log(data)))
 }
 
 //-----------update the database------------

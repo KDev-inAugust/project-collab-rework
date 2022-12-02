@@ -1,22 +1,18 @@
  
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Task from './Task';
 
 
 
 function Project({project, patchTaskName, handleChangeUser, deleteATask, addTaskToProject, userData, deleteProject}){
+console.log(project)
 
     const [showProjectEdit, setShowProjectEdit]=useState(false)
     const [newTaskName, setNewTaskName]=useState("")
     const [newUserId, setNewUserId]=useState("")  
     const [taskCount, setTaskCount]=useState(0)
 
-    console.log(`Project ${project.id} rendered`)
-
-    fetch(`http://localhost:9292/projects_tasks/${project.id}`)
-    .then(res=>res.json())
-    .then(data=>setTaskCount(data.length))
-
+  
 
      //------show task edit fields-----------
       function toggleTaskEditFields(){
@@ -46,6 +42,31 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
           deleteProject(project.id)
         }
       }
+      console.log("tasks" in project);
+
+      let projArray;
+      if ("tasks" in project===true){
+        projArray=project.tasks.map(task=>{
+          return(
+              <div>
+              <Task 
+              id={task.id} 
+              name={task.name} 
+              user_id={task.user_id} 
+              userName={task.user.name}
+              handleChangeUser={handleChangeUser}
+              userData={userData}
+              deleteATask={deleteATask}
+              patchTaskName={patchTaskName}/>
+              </div>
+            )
+        })
+
+      }
+      else project.tasks=[]
+
+
+
 
     return (
         <div id="project_wrapper">
@@ -53,21 +74,7 @@ function Project({project, patchTaskName, handleChangeUser, deleteATask, addTask
           <h4>tasks in this project: {taskCount}</h4>
             <div id="project_container">
             {/* first grab all the tasks in this project */}
-            {project.tasks.map(task=>{
-                return(
-                    <div>
-                    <Task 
-                    id={task.id} 
-                    name={task.name} 
-                    user_id={task.user_id} 
-                    userName={task.user.name}
-                    handleChangeUser={handleChangeUser}
-                    userData={userData}
-                    deleteATask={deleteATask}
-                    patchTaskName={patchTaskName}/>
-                    </div>
-                  )
-              })}
+            {projArray}
             </div>
             {/* Project Edit Toggle and Properties */}
             {showProjectEdit===false ? 
