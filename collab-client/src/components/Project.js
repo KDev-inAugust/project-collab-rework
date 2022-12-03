@@ -3,15 +3,14 @@ import React, {useState} from 'react';
 import Task from './Task';
 
 
-function Project({project, handleChangeUser, deleteATask, addTaskToProject, userData, deleteProject}){
+function Project({project, addTaskToProject, userData, deleteProject}){
 
 
     const [showProjectEdit, setShowProjectEdit]=useState(false)
     const [newTaskName, setNewTaskName]=useState("")
     const [newUserId, setNewUserId]=useState("")  
     const [taskCount, setTaskCount]=useState(0)
-
-  
+    const [taskArray, setTaskArray]=useState(project.tasks)
 
      //------show task edit fields-----------
       function toggleTaskEditFields(){
@@ -24,6 +23,25 @@ function Project({project, handleChangeUser, deleteATask, addTaskToProject, user
     setShowProjectEdit(false)
   }
 
+
+  //------------add a task to a project--------
+
+function addTaskToProject(newTaskName, newUserId, projectId){
+  fetch('http://localhost:9292/tasks',{
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: newTaskName,
+      completedYN: false,
+      user_id: newUserId,
+      project_id: projectId,
+      })
+  }).then(res=>res.json())
+  .then((data)=>setTaskArray([...taskArray,data]));
+}
+
     //---------------------- set new task name --------------
 
     function handleNewTaskName(e){
@@ -34,6 +52,23 @@ function Project({project, handleChangeUser, deleteATask, addTaskToProject, user
       setNewUserId(e.target.value)
     }
 
+    
+
+    //-------------delete a task--------------
+      function deleteATask(id){
+        fetch(`http://localhost:9292/tasks/${id}`,{
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then(res=>res.json()
+      .then(data=>
+        {let newArray=taskArray.filter(task=>task.id!==data.id);
+          setTaskArray(newArray);
+        }
+        
+        ))}
+
     //------------handle delete current project---------------
     
       function handleDeleteProject(){
@@ -42,33 +77,27 @@ function Project({project, handleChangeUser, deleteATask, addTaskToProject, user
         }
       }
 
-      let projArray;
-      if ("tasks" in project===true){
-        projArray=project.tasks.map(task=>{
-          return(
-              <div>
-              <Task 
-              id={task.id} 
-              name={task.name} 
-              user_id={task.user_id} 
-              userName={task.user.name}
-              handleChangeUser={handleChangeUser}
-              userData={userData}
-              deleteATask={deleteATask}/>
-              </div>
-            )
-        })
-
+      //-------------allow adding of Project with no tasks-----
+      if ("tasks" in project===false){
+        project.tasks=[]
       }
-      else project.tasks=[]
 
+      //----------the project Return------------
     return (
         <div id="project_wrapper">
           <h3>{`${project.name}`}</h3>
           <h4>tasks in this project: {taskCount}</h4>
             <div id="project_container">
-            {/* first grab all the tasks in this project */}
-            {projArray}
+            {taskArray.map(task=>{
+          return(
+              <div>
+              <Task 
+              task={task}
+              deleteATask={deleteATask}
+              userData={userData}/>
+              </div>
+            )
+        })}
             </div>
             {/* Project Edit Toggle and Properties */}
             {showProjectEdit===false ? 

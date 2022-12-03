@@ -60,38 +60,6 @@ function deleteProject(id){
   .then(data=>setProjectData(projectData.filter((index)=>index.id!==data.id)))
 }
 
-
-//------------add a task to a project--------
-
-function addTaskToProject(newTaskName, newUserId, projectId){
-  fetch('http://localhost:9292/tasks',{
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      name: newTaskName,
-      completedYN: false,
-      user_id: newUserId,
-      project_id: projectId
-      })
-  }).then(res=>res.json())
-  .then(data=>console.log(data));
-}
-
-
-
-//-------------delete a task--------------
-function deleteATask(id){
-  fetch(`http://localhost:9292/tasks/${id}`,{
-  method: "DELETE",
-  headers: {
-    "Content-Type": "application/json",
-  },
-}).then(res=>res.json()
-.then(data=>console.log(data)))
-}
-
 //-----------update the database------------
 
   return (
@@ -105,8 +73,6 @@ function deleteATask(id){
             project={project} 
             deleteProject={deleteProject}
             userData={userData}
-            addTaskToProject={addTaskToProject}
-            deleteATask={deleteATask}
             />
           )
         })

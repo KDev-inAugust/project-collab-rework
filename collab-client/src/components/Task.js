@@ -1,14 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
-function Task({id, user_id, name, userName, userData, handleChangeUser, deleteATask, patchTaskName}){
-    const [userNameState, setUserName] = useState(userName)
+function Task({task, userData, handleChangeUser, deleteATask, patchTaskName}){
+    const [userNameState, setUserName] = useState(task.user.name)
     const [showEditFields, setshowEditFields] = useState(false)
-    const [taskName, setTaskName] = useState(name)
+    const [taskName, setTaskName] = useState(task.name)
    
+    console.log("task rendered with", "user", userNameState, "task", taskName, "id", task.id);
 
 
     function handleUserNameOnChange(e){
-       handleChangeUser(id, e.target.value);
+       handleChangeUser(task.id, e.target.value);
        console.log(e.target.value)
     }
 
@@ -30,8 +31,6 @@ function Task({id, user_id, name, userName, userData, handleChangeUser, deleteAT
          });
   }
 
-  
-  
     //----------this function allows the edit fields for a task to be shown------
 
     function showHideEditTask(){
@@ -40,7 +39,7 @@ function Task({id, user_id, name, userName, userData, handleChangeUser, deleteAT
         } 
         else if (showEditFields===true){
             setshowEditFields(false);
-            patchTaskName(taskName, id);
+            patchTaskName(taskName, task.id);
     }
         }
 
@@ -66,7 +65,7 @@ function Task({id, user_id, name, userName, userData, handleChangeUser, deleteAT
     function handleDeleteClick(){
         if (window.confirm('are you sure you want to delete this task?')===true){
             setshowEditFields(false)
-            deleteATask(id)
+            deleteATask(task.id)
     }
         }
 

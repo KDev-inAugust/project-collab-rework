@@ -42,7 +42,7 @@ class ApplicationController < Sinatra::Base
       user_id: params[:user_id],
       project_id: params[:project_id]
     )
-    task.to_json
+    task.to_json include: :user
   end
 
   # ------ PATCH requests------
