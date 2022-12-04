@@ -5,8 +5,7 @@ function Task({task, userData, handleChangeUser, deleteATask, patchTaskName}){
     const [showEditFields, setshowEditFields] = useState(false)
     const [taskName, setTaskName] = useState(task.name)
    
-    console.log("task rendered with", "user", userNameState, "task", taskName, "id", task.id);
-
+    console.log("task in task module", task);
 
     function handleUserNameOnChange(e){
        handleChangeUser(task.id, e.target.value);
@@ -48,19 +47,7 @@ function Task({task, userData, handleChangeUser, deleteATask, patchTaskName}){
         setTaskName(e.target.value)
     }
 
-    //----------- -PATCH- name for task --------------
-    function patchTaskName(taskName, id){
-        fetch(`http://localhost:9292/task_name_change/${id}`,{
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-        name: taskName
-        }),})
-    .then(res=>res.json())
-    .then(data=>setTaskName(data.name));
-    }
+    
 
     function handleDeleteClick(){
         if (window.confirm('are you sure you want to delete this task?')===true){
@@ -72,9 +59,9 @@ function Task({task, userData, handleChangeUser, deleteATask, patchTaskName}){
 
     return(
         <div className='task'>
-            {`name: ${taskName}`}
+            {`name: ${task.name}`}
             <br></br>
-            {` assigned to: ${userNameState}`}
+            {` assigned to: ${task.user.name}`}
             <br></br>
             {showEditFields===false? <button onClick={showHideEditTask}>edit task</button>
             : 

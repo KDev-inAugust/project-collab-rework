@@ -60,7 +60,7 @@ class ApplicationController < Sinatra::Base
     task.update(
       name: params[:name]
     )
-    task.to_json
+    task.to_json include: :user
   end
 
   # ------ DELETE requests --------

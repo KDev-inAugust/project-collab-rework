@@ -11,6 +11,7 @@ function Project({project, addTaskToProject, userData, deleteProject}){
     const [newUserId, setNewUserId]=useState("")  
     const [taskCount, setTaskCount]=useState(0)
     const [taskArray, setTaskArray]=useState(project.tasks)
+    const [updatedTaskName, setUpdatedTaskName]=useState("")
 
      //------show task edit fields-----------
       function toggleTaskEditFields(){
@@ -21,12 +22,9 @@ function Project({project, addTaskToProject, userData, deleteProject}){
   function handleAddTask (){
       addTaskToProject(newTaskName, newUserId, project.id)
     setShowProjectEdit(false)
-  }
+  } 
 
-
-  //------------add a task to a project--------
-
-function addTaskToProject(newTaskName, newUserId, projectId){
+  function addTaskToProject(newTaskName, newUserId, projectId){
   fetch('http://localhost:9292/tasks',{
     method: "POST",
     headers: {
@@ -40,9 +38,9 @@ function addTaskToProject(newTaskName, newUserId, projectId){
       })
   }).then(res=>res.json())
   .then((data)=>setTaskArray([...taskArray,data]));
-}
+  }
 
-    //---------------------- set new task name --------------
+    //---------------------- set new task name on create--------------
 
     function handleNewTaskName(e){
       setNewTaskName(e.target.value)
@@ -52,8 +50,32 @@ function addTaskToProject(newTaskName, newUserId, projectId){
       setNewUserId(e.target.value)
     }
 
+    //----------- -PATCH- name for task --------------
+    function patchTaskName(taskName, id){
+      fetch(`http://localhost:9292/task_name_change/${id}`,{
+      method: "PATCH",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+      name: taskName
+      }),})
+      .then(res=>res.json())
+      .then((data)=>{
+        const newTaskArray=taskArray.map(
+          (index)=>{
+            if (index.id===data.id){
+              return {
+                ...index,
+                name: taskName
+              }}
+              else {return index}
+          }
+        )
+        setTaskArray(newTaskArray)
+      });
+      }
     
-
     //-------------delete a task--------------
       function deleteATask(id){
         fetch(`http://localhost:9292/tasks/${id}`,{
@@ -65,9 +87,7 @@ function addTaskToProject(newTaskName, newUserId, projectId){
       .then(data=>
         {let newArray=taskArray.filter(task=>task.id!==data.id);
           setTaskArray(newArray);
-        }
-        
-        ))}
+        }))}
 
     //------------handle delete current project---------------
     
@@ -94,7 +114,9 @@ function addTaskToProject(newTaskName, newUserId, projectId){
               <Task 
               task={task}
               deleteATask={deleteATask}
-              userData={userData}/>
+              patchTaskName={patchTaskName}
+              userData={userData}
+              />
               </div>
             )
         })}
@@ -112,7 +134,7 @@ function addTaskToProject(newTaskName, newUserId, projectId){
               <br></br>
               <p>choose a person for this task</p>
               <select onChange={handleNewTaskUserName}>
-                  
+                  <option>choose a user</option>
                   {userData.map((user)=>
                     <option value={user.id}>{user.name}</option>)}
               </select>
