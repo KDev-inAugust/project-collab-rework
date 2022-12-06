@@ -10,7 +10,7 @@ https://www.youtube.com/watch?v=oQrHjB4ux_4
 
 This project makes use of Sinatra and Active Record to interact with an SQL database.  The routes are as follows.
 
-##-GET-
+## -GET-
 
 /users
 
@@ -28,7 +28,7 @@ returns a user entry by a string of its own name.
 
 returns a user entry by its task id.
 
-##-POST-
+## -POST-
 
 /projects
 
@@ -38,7 +38,7 @@ creates a new project entry with only a name.
 
 creates a new task with task name and user assigned to the task.
 
-##-PATCH-
+## -PATCH-
 
 /tasks/:id
 
@@ -48,7 +48,7 @@ finds a task by its id and updates the user id associated to it.
 
 finds a taks by its id and updates the task name.
 
-##-DELETE-
+## -DELETE-
 
 /tasks/:id
 
