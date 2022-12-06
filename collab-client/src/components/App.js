@@ -7,13 +7,14 @@ import Project from './Project';
 function App() {
   const [projectData, setProjectData]=useState([])
   const [userData, setUserData]=useState([])
+  const [deletedProject, setDeletedProject]=useState([])
 
 //---------get project data--------
 useEffect(()=>{
   fetch("http://localhost:9292/projects")
   .then(res=>res.json())
   .then(data=>setProjectData(data));
-},[])
+},[deletedProject])
 
 //--------get user data--------------
 
@@ -21,7 +22,7 @@ useEffect(()=>{
   fetch("http://localhost:9292/users")
   .then(res=>res.json())
   .then(data=>setUserData(data));
-},[])
+},[deletedProject])
 
 //---------- -POST- new project to DB------------
 
@@ -47,8 +48,6 @@ function deleteProject(id){
       "Content-Type": "application/json",
     },
   })
-  .then(res=>res.json())
-  .then(data=>console.log(data))
 
   fetch(`http://localhost:9292/projects/${id}`,{
     method: "DELETE",
@@ -57,7 +56,7 @@ function deleteProject(id){
     },
   })
   .then(res=>res.json())
-  .then(data=>setProjectData(projectData.filter((index)=>index.id!==data.id)))
+  .then(data=>{setDeletedProject(data)});
 }
 
 //-----------update the database------------
