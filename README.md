@@ -2,7 +2,7 @@
 
 This app is a simple and straightforward platform designed to delegate team-member responsibility for tasks across a project. This app utilizes a React frontend. Once a project is created the associated task cards are visually grouped inside the task field. The tasks themsleves are assigned a name and a user from the list of available users in the database. Tasks can be fully edited by changing task name, user associated with the task, or by deleting the task altogether. Projects can also be deleted which will delete all task data associated with that project from the database.
 
-##Short Demo Video
+## 'Short Demo Video'
 
 https://www.youtube.com/watch?v=oQrHjB4ux_4
 
